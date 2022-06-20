@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+set -Eeuo pipefail
+
+if [[ -z "${ASDF_DOWNLOAD_PATH:-}" ]]; then
+	DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
+	export ASDF_DOWNLOAD_PATH="${ASDF_INSTALL_PATH}"
+
+	# ignore errors, as we will check for the presence of the file below
+	# shellcheck source=bin/download
+	"${DIR}/download" || :
+fi
+
+mkdir -p "${ASDF_INSTALL_PATH}/bin"
+
+mv "${ASDF_DOWNLOAD_PATH}/stripe" "${ASDF_INSTALL_PATH}/bin/stripe"

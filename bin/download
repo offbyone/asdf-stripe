@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+
+set -Eeuo
+
+[ "${BASH_VERSINFO[0]}" -ge 3 ] && set -o pipefail
+
+PLUGIN_DIR="$(dirname "${BASH_SOURCE[0]}")/.."
+
+# shellcheck source=/dev/null
+source "$PLUGIN_DIR/lib/helpers.sh"
+
+# See https://github.com/asdf-vm/asdf/blob/master/docs/plugins-create.md#github-api-rate-limiting
+function fetch() {
+	curl --silent --fail --show-error --location ${GITHUB_API_TOKEN:+-H "Authorization: token ${GITHUB_API_TOKEN}"} "$@"
+}
+
+if [[ "${ASDF_INSTALL_TYPE:-version}" == 'ref' ]]; then
+	echo >&2 "⛔ This plugin does not support installing by ref."
+	exit 1
+fi
+
+mkdir -p "${ASDF_DOWNLOAD_PATH}"
+
+msg "Downloading Stripe CLI v${ASDF_INSTALL_VERSION}"
+
+stripe_release="$(get_filename)"
+
+stripe_download="stripe-$(get_extension)"
+
+url="https://github.com/stripe/stripe-cli/releases/download/v${ASDF_INSTALL_VERSION}/${stripe_release}"
+
+msg "Using URL $url"
+msg "Expecting https://github.com/stripe/stripe-cli/releases/download/v1.10.3/stripe_1.10.3_mac-os_x86_64.tar.gz"
+fetch \
+	"$url" \
+	-o "${ASDF_DOWNLOAD_PATH}/${stripe_download}"
+
+(
+	cd "${ASDF_DOWNLOAD_PATH}"
+	tar xf "${stripe_download}"
+)

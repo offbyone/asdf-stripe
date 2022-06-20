@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+set -Eeo pipefail
+
+echo "An asdf plugin for the Stripe CLI: https://stripe.com/docs/stripe-cli"

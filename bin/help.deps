@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+set -Eeo pipefail
+
+echo "awk
+bash
+chmod
+curl
+cut
+grep
+mkdir
+mv
+python
+sed
+sort
+xargs"
