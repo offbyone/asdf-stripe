@@ -9,12 +9,12 @@ get_platform() {
 	local platform_check=${ASDF_STRIPE_OVERWRITE_PLATFORM:-"$platform"}
 
 	case "$platform_check" in
-		linux | darwin)
-			[ -z "$silent" ] && msg "Platform '${platform_check}' supported!"
-			;;
-		*)
-			fail "Platform '${platform_check}' not supported!"
-			;;
+	linux | darwin)
+		[ -z "$silent" ] && msg "Platform '${platform_check}' supported!"
+		;;
+	*)
+		fail "Platform '${platform_check}' not supported!"
+		;;
 	esac
 
 	echo -n "$platform_check"
@@ -25,8 +25,8 @@ get_platform_for_download() {
 	platform=$(get_platform silently)
 
 	case "$platform" in
-		darwin) echo -n "mac-os" ;;
-		*) echo -n "$platform" ;;
+	darwin) echo -n "mac-os" ;;
+	*) echo -n "$platform" ;;
 	esac
 }
 
@@ -37,24 +37,24 @@ get_arch() {
 	platform=$(get_platform silently)
 	local platform_arch="${arch_check}:${platform}"
 	case "${platform_arch}" in
-		x86_64:darwin)
-			arch="x86_64"
-			;;
-		aarch64:darwin)
-			arch="arm64"
-			;;
-		x86_64:* | amd64:*)
-			arch="x86_64"
-			;;
-		armv7l:*)
-			arch="armv7l"
-			;;
-		aarch64:* | arm64:*)
-			arch="aarch64"
-			;;
-		*)
-			fail "Arch '${arch_check}' not supported!"
-			;;
+	x86_64:darwin)
+		arch="x86_64"
+		;;
+	aarch64:darwin)
+		arch="arm64"
+		;;
+	x86_64:* | amd64:*)
+		arch="x86_64"
+		;;
+	armv7l:*)
+		arch="armv7l"
+		;;
+	aarch64:* | arm64:*)
+		arch="aarch64"
+		;;
+	*)
+		fail "Arch '${arch_check}' not supported!"
+		;;
 	esac
 
 	echo -n $arch
