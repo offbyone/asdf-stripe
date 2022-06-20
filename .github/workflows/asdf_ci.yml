@@ -1,0 +1,46 @@
+name: ASDF CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  plugin-test:
+    strategy:
+      matrix:
+        os:
+          - ubuntu-latest
+          - macos-10.15 # macos-earliest
+          - macos-latest
+        version:
+          - "1.10.3" # earliest supported
+          - "latest"
+
+    runs-on: ${{ matrix.os }}
+    steps:
+      # See https://github.com/asdf-vm/asdf/blob/master/docs/plugins/create.md#example-github-action
+      - name: test plugin
+        uses: asdf-vm/actions/plugin-test@v1
+        with:
+          command: stripe --version
+          version: ${{ matrix.version }}
+        env:
+          GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }} # automatically provided
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Run ShellCheck
+        run: shellcheck bin/*
+  format:
+    runs-on: macos-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Install shfmt
+        run: brew install shfmt
+      - name: Run shfmt
+        run: shfmt -d .
