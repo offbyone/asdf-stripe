@@ -40,7 +40,7 @@ get_arch() {
 	x86_64:darwin)
 		arch="x86_64"
 		;;
-	aarch64:darwin)
+	aarch64:darwin | arm64:darwin)
 		arch="arm64"
 		;;
 	x86_64:* | amd64:*)

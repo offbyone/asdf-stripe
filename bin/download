@@ -30,7 +30,6 @@ stripe_download="stripe-$(get_extension)"
 url="https://github.com/stripe/stripe-cli/releases/download/v${ASDF_INSTALL_VERSION}/${stripe_release}"
 
 msg "Using URL $url"
-msg "Expecting https://github.com/stripe/stripe-cli/releases/download/v1.10.3/stripe_1.10.3_mac-os_x86_64.tar.gz"
 fetch \
 	"$url" \
 	-o "${ASDF_DOWNLOAD_PATH}/${stripe_download}"
